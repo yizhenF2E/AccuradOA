@@ -1,0 +1,6 @@
+.idea
+src/assets/js/cloudConfig.js
+/node_modules
+.cache
+dist
+src/download
