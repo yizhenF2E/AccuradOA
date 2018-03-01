@@ -32,6 +32,7 @@ initInput(dummyOverTime)
 function init(name, dummy) {
     let query = new AV.Query(name);
     if (!isLocal) {
+        query.limit(1000)
         query.find().then( (response) => {
             let data = initDate(response)
             gridManagerInit(data)
@@ -72,9 +73,9 @@ function gridManagerInit (data) {
         ,supportAjaxPage:true
         ,supportSorting: false
         ,isCombSorting: false
-        ,disableCache: false
+        ,disableCache: true
         ,ajax_data: data
-        ,pageSize: 20
+        ,pageSize: 100
         ,columnData: [
          {
             key: 'id',
