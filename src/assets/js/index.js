@@ -269,7 +269,6 @@ function submitEvent (dummy) {
             query.equalTo('name', searchVal)
             query.find().then(function (results) {
                 let data = initDate(results)
-                console.log(data)
                 document.querySelector('table').GM('setAjaxData', data);
             }, function (error) {
                 alert('搜素失败')
@@ -278,7 +277,7 @@ function submitEvent (dummy) {
     })
     // 重置
     $('#reset').on('click', function () {
-        let searchVal = $('#searchName').val('')
+        $('#searchName').val('')
         let query = new AV.Query(dataBase)
 
         query.find().then( (response) => {
@@ -288,18 +287,6 @@ function submitEvent (dummy) {
             alert('请稍后')
         }).then(()=> {}, (error) => {console.log(error)})
 
-        // if (!searchVal) {
-        //     alert('二营长，你TND的意大利炮呢！给我轰死不填值的！')
-        // } else {
-        //     query.equalTo('name', searchVal)
-        //     query.find().then(function (results) {
-        //         let data = initDate(results)
-        //         console.log(data)
-        //         document.querySelector('table').GM('setAjaxData', data);
-        //     }, function (error) {
-        //         alert('搜素失败')
-        //     })
-        // }
     })
 }
 /**
