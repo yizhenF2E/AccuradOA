@@ -280,7 +280,7 @@ function submitEvent (dummy) {
     $('#reset').on('click', function () {
         $('#searchName').val('')
         let query = new AV.Query(dataBase)
-
+        query.limit(1000)
         query.find().then( (response) => {
             let data = initDate(response)
             document.querySelector('table').GM('setAjaxData', data)
