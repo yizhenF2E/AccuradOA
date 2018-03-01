@@ -1,5 +1,7 @@
 // 是否是本地数据，如果 本地 请改true
 let isLocal = false
+
+let dataBase = 'OverTime2018'
 // 假数据
 let dummyOverTime = {
     'data':[
@@ -18,8 +20,8 @@ let dummyOverTime = {
     'totals': 1
 }
 
-init('OverTime2018', dummyOverTime)
-initInput()
+init(dataBase, dummyOverTime)
+initInput(dummyOverTime)
 
 
 
@@ -31,15 +33,14 @@ function init(name, dummy) {
     let query = new AV.Query(name);
     if (!isLocal) {
         query.find().then( (response) => {
-            let array = initDate(response)
-            gridManagerInit(array)
+            let data = initDate(response)
+            gridManagerInit(data)
         }, (error) => {
             alert('请稍后')
         }).then(()=> {}, (error) => {console.log(error)});
     } else {
         gridManagerInit(dummy)
     }
-
 }
 /**
  * 将拿到的数据转换为表格适应的数据结构
@@ -50,6 +51,7 @@ function initDate (data) {
     let array = []
     let object = {}
     data.map(item => {
+        item.attributes.id = item.id
         array.push(item.attributes)
     })
     object.data = array
@@ -66,14 +68,21 @@ function gridManagerInit (data) {
     let TGM = table.GM({
         supportRemind: false
         ,gridManagerName: 'test'
-        ,height: '400px'
+        ,height: 'calc(100vh - 476px)'
         ,supportAjaxPage:true
         ,supportSorting: false
         ,isCombSorting: false
         ,disableCache: false
         ,ajax_data: data
         ,pageSize: 20
-        ,columnData: [{
+        ,columnData: [
+         {
+            key: 'id',
+            width: '100px',
+            align: 'left',
+            text: 'id',
+            isShow: false,
+         },{
             key: 'department',
             width: '100px',
             align: 'left',
@@ -114,6 +123,14 @@ function gridManagerInit (data) {
             width: '100px',
             align: 'left',
             text: '星期几'
+        },{
+            key: 'action',
+            remind: 'the action',
+            width: '10%',
+            text: '操作',
+            template: function(action, rowObject){
+                return '<span class="plugin-action" onclick="deleteDate(this)" learnLink-id="'+rowObject.id+'">删除</span>';
+            }
         }
         ]
         // 分页前事件
@@ -154,16 +171,45 @@ function gridManagerInit (data) {
     });
 }
 
-function initInput () {
+/**
+ * 初始化日期输入
+ * @param dummy
+ */
+function initInput (dummy) {
     $('#dateStart').datetimepicker({format: 'yyyy-mm-dd hh:ii'})
-    $('#dateEnd').datetimepicker({format: 'yyyy-mm-dd hh:ii', language: 'cn'})
-    submitEvent()
+    $('#dateEnd').datetimepicker({format: 'yyyy-mm-dd hh:ii'})
+    console.log(1)
+    submitEvent(dummy)
+}
+/**
+ * 删除
+ * @param node
+ */
+function deleteDate(node) {
+    let tr = node.parentNode.parentNode;
+    let data = document.querySelector('table').GM('getRowData', tr)
+    fillModel(data, 'delete')
+    $('.model-delete').on('click', function () {
+        let OverTimeData = AV.Object.createWithoutData(dataBase, $(node).attr('learnlink-id'));
+        OverTimeData.destroy().then(function (success) {
+            location.reload()
+        }, function (error) {
+            alert('删除失败')
+        })
+    })
 }
 
-function submitEvent () {
+
+/**
+ * 提交的数据
+ * @param dummy
+ */
+function submitEvent (dummy) {
+    let formData
+    // 提交
     $('#overTimeForm').on('submit', (event) => {
         event.preventDefault()
-        let formData = $('#overTimeForm').serializeObject()
+        formData = $('#overTimeForm').serializeObject()
         let reg = /[\u4E00-\u9FA5]{2,4}/
 
         if (!formData.name || !formData.dateStart || !formData.dateEnd || !formData.fare || !formData.mealFee) {
@@ -171,38 +217,115 @@ function submitEvent () {
         } else if (!reg.test(formData.name)) {
             alert('就是为了防止你这种人！还好我写了正则！我的刀已经出鞘！')
         } else {
-            formData.time = diffTime(formData.dateStart, formData.dateEnd)
-            formData.week = new Date(formData.dateStart).getDay().toString()
-            formData.dateStart.toString()
-            formData.dateEnd.toString()
-            fillModel(formData)
+            let start = new Date(formData.dateStart)
+            let end = new Date(formData.dateEnd)
+            let diff = end.getTime() - start.getTime()
+            if (diff < 0) {
+                alert('你穿越了吗？我又一次拿起了我的宝刀！')
+            } else {
+                formData.time = diffTime(diff)
+                formData.week = new Date(formData.dateStart).getDay().toString()
+                formData.dateStart.toString()
+                formData.dateEnd.toString()
+                fillModel(formData, 'submit')
+            }
         }
+    })
+    // 确认提交
+    $('.model-send').on('click', function () {
+        $('#basicModal').modal('hide')
+        if (!isLocal) {
+            let OverTime = AV.Object.extend(dataBase);
+            let OverTimeData = new OverTime();
+            OverTimeData.save({
+                'department': $('.modal-body .department').text(),
+                'name': $('.modal-body .name').text(),
+                'dateStart': $('.modal-body .start-date').text(),
+                'dateEnd': $('.modal-body .end-date').text(),
+                'time': parseFloat($('.modal-body .time').text()).toString(),
+                'fare': parseFloat($('.modal-body .fare').text()).toString(),
+                'mealFee': parseFloat($('.modal-body .meal-fee').text()).toString(),
+                'week': $('.modal-body .week').text(),
+            }).then((res) => {
+                location.reload()
+            })
+        } else {
+            alert('提交成功，本地数据就不不改了')
+        }
+    })
+    // 搜索
+    $('#searchName').keyup(function (e) {
+        console.log(e)
+        if(e.which === 13) {
+            $("#search").click();
+        }
+    })
+    $('#search').on('click', function () {
+        let query = new AV.Query(dataBase)
+        let searchVal = $('#searchName').val()
+        if (!searchVal) {
+            alert('二营长，你TND的意大利炮呢！给我轰死不填值的！')
+        } else {
+            query.equalTo('name', searchVal)
+            query.find().then(function (results) {
+                let data = initDate(results)
+                console.log(data)
+                document.querySelector('table').GM('setAjaxData', data);
+            }, function (error) {
+                alert('搜素失败')
+            })
+        }
+    })
+    // 重置
+    $('#reset').on('click', function () {
+        let searchVal = $('#searchName').val('')
+        let query = new AV.Query(dataBase)
+
+        query.find().then( (response) => {
+            let data = initDate(response)
+            document.querySelector('table').GM('setAjaxData', data)
+        }, (error) => {
+            alert('请稍后')
+        }).then(()=> {}, (error) => {console.log(error)})
+
+        // if (!searchVal) {
+        //     alert('二营长，你TND的意大利炮呢！给我轰死不填值的！')
+        // } else {
+        //     query.equalTo('name', searchVal)
+        //     query.find().then(function (results) {
+        //         let data = initDate(results)
+        //         console.log(data)
+        //         document.querySelector('table').GM('setAjaxData', data);
+        //     }, function (error) {
+        //         alert('搜素失败')
+        //     })
+        // }
     })
 }
 /**
  * 计算时间差
- * @param startDate
- * @param endDate
- * @returns {*}
+ * @param diff
+ * @returns {string}
  */
-function diffTime (startDate,endDate) {
-    let start = new Date(startDate)
-    let end = new Date(endDate)
-    let diff = end.getTime() - start.getTime()
-    if (diff < 0) {
-        alert('你穿越了吗？我又一次拿起了我的宝刀！')
-        return false
-    } else {
-        // 计算出分钟
-        let minutes = Math.floor(diff/(60*1000))
-        return (minutes/60).toFixed(1)
-    }
+function diffTime (diff) {
+    // 计算出分钟
+    let minutes = Math.floor(diff/(60*1000))
+    return (minutes/60).toFixed(1)
 }
 /**
  * 填充model
  * @param data
  */
-function fillModel (data) {
+function fillModel (data, type) {
+    if (type === 'submit') {
+        $('#basicModal > h4').html('提交确认')
+        $('.send-footer').show()
+        $('.delete-footer').hide()
+    } else if (type === 'delete'){
+        $('#basicModal > h4').html('删除确认')
+        $('.send-footer').hide()
+        $('.delete-footer').show()
+    }
     $('.modal-body .department').text(data.department)
     $('.modal-body .name').text(data.name)
     $('.modal-body .start-date').text(data.dateStart)
@@ -212,30 +335,9 @@ function fillModel (data) {
     $('.modal-body .meal-fee').text(data.mealFee + '元')
     $('.modal-body .week').text(data.week)
     $('#basicModal').modal('show')
-    saveData(data, dummyOverTime)
+    return data
 }
-function saveData ({department, name, dateStart, dateEnd, time, fare, mealFee, week}, dummy) {
-    $('.model-send').on('click', function () {
-        $('#basicModal').modal('hide')
-        if (!isLocal) {
-            let OverTime = AV.Object.extend('OverTime2018');
-            let OverTimeData = new OverTime();
-            OverTimeData.save({
-                department,
-                name,
-                dateStart,
-                dateEnd,
-                time,
-                fare,
-                mealFee,
-                week,
-            }).then((res) => {
-                location.reload()
-            })
-        } else {
-            alert('提交成功，本地数据就不不改了')
-        }
 
-    })
-}
+
+
 

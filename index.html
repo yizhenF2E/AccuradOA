@@ -6,27 +6,36 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="src/vendors/bootstrap/bootstrap.css">-->
     <link rel="stylesheet" href="src/vendors/dateTimepicker/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" type="text/css" href="/node_modules/GridManager/css/GridManager.css"/>
-
     <link rel="stylesheet" type="text/css" href="./src/assets/css/default.css">
-    <title>Document</title>
+    <title>互联网研发加班记录</title>
 </head>
 <body>
+
 <div class="alert alert-success">
-    <!--<button type="button" class="close" data-dismiss="alert">&times;</button>-->
     <h4>2018年互联网加班记录</h4>
-    <p>初衷：方便各位记录加班，我每次建excel也很麻烦</p>
-    <p>在表格上按右键，可以下载表格</p>
+    <p>初衷：方便各位记录加班，我每次建excel也很麻烦,在表格上按右键，可以下载表格</p>
     <hr>
     <p>打车说明： 打车请保留打车票据，滴滴快车等请保留网络发票和行程详情，不建议使用替票。</p>
     <p>餐费说明： 工作日超过4个小时，非工作日超过6个小时，餐费40, 正常20。</p>
     <p>提交票据：请写明加班日期和加班人，如果是替票请标记清楚。</p>
     <hr>
-    <p>有些需求可能没有考虑全面，有bug或者需求，请不吝赐教！当然也不要恶意攻击，比如XSS攻击、SQL注入。</p>
-    <p>小弟当然每次发钱，眼睛都花了，如果各位大神能打赏1元，让我攒钱买个DQ，也是很好的</p>
+    <p><a href="src/assets/html/prev.html"> 往期报销查询入口 </a>|<a href="src/assets/html/log.html">修改记录 </a></p
+    <p>有些需求可能没有考虑全面，有bug或者需求，请不吝赐教！项目地址 > <a href=" https://github.com/yizhenF2E/AccuradOA">https://github.com/yizhenF2E/AccuradOA</a></p>
 </div>
+
+
+<div id="searchArea" class="search-area">
+    <div class="search-item">
+        <label class="search-title">姓名：</label>
+        <input class="search-content form-control " type="text" id="searchName" placeholder="请输入查询的姓名">
+    </div>
+    <button type="submit" class="btn btn-default" id="search">搜索</button>
+    <button class="btn btn-default" id="reset">重置</button>
+</div>
+<br>
+<!--输入-->
 <form class="form-inline" id="overTimeForm">
     <div class="form-row">
         <label>部门:</label>
@@ -49,26 +58,19 @@
         <input type="number"  class="form-control" name="fare" value="0" placeholder="输入数字">
 
         <label>餐费:</label>
-        <!--<input type="number"  class="form-control" name="mealFee" value="20" placeholder="输入数字">-->
         <select name="mealFee" class="form-control form-select">
             <option value="20">20</option>
             <option value="40">40</option>
         </select>
-        <button id="submit" type="submit" href="#formModal" class="btn btn-default"  data-toggle="modal">提交</button>
-
-
+        <button id="submit" class="btn btn-default">提交</button>
     </div>
-
 </form>
 
 
-<!-- basic modal -->
-<div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+<!-- 提交确认 -->
+<div class="modal fade" id="basicModal" >
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4>认真看一下 目前不支持修改</h4>
-            </div>
             <div class="modal-body">
                 <ul>
                     <li>部门：<span class="department">ddd</span></li>
@@ -81,22 +83,21 @@
                     <li>周几：<span class="week">ddd</span></li>
                 </ul>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer send-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭修改</button>
                 <button type="button" class="btn btn-primary model-send" >保存</button>
+            </div>
+            <div class="modal-footer delete-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">手残了</button>
+                <button type="button" class="btn btn-primary model-delete" >删除</button>
             </div>
         </div>
     </div>
 </div>
-
-<br/>
+<br>
 <table></table>
 
-<h4>2017年查询</h4>
-<ul>
-    <li><a href="src/download/加班及调休-互联网中心（12月）.xlsx">加班及调休-互联网中心（12月）[已发放]</a></li>
-    <li><a href="src/download/加班及调休-互联网中心（9月-11月）.xlsx">加班及调休-互联网中心（9月-11月）[已发放]</a></li>
-</ul>
+
 
 
 

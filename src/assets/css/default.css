@@ -8,3 +8,26 @@
 .form-select {
     width: 196px!important;
 }
+
+.plugin-action {
+    color: red;
+    cursor: pointer;
+}
+
+.search-area {
+    border: 1px solid #ccc;
+    background: #efefef;
+    padding: 10px;
+}
+
+.search-area .search-item {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.search-content {
+    display: inline-block;
+    width: 180px;
+
+}
+
