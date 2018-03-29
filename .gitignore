@@ -4,3 +4,4 @@ src/assets/js/cloudConfig.js
 .cache
 dist
 src/download
+qiniu-config.json

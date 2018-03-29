@@ -3,16 +3,15 @@
     let view  = {}
     let model = {
         data: {
-            dataBase: 'OverTime2018',
-            localParam: 'name',
+            dataBase: 'OverTime2018'
         },
-        getLocal () {
-            return localStorage.getItem(this.data.localParam)
+        getLocalName () {
+            return localStorage.getItem('name')
         },
         // 填充名字
         fillName () {
-            if (this.getLocal()) {
-                $('.login-info .login-name').html(this.getLocal())
+            if (this.getLocalName()) {
+                $('.login-info .login-name').html(this.getLocalName())
             } else {
                 alert('请重新登录！')
                 location.href = `http://${location.host}`
@@ -33,8 +32,8 @@
             let query = new AV.Query(this.data.dataBase)
             query.limit(1000)
             // 后门
-            if(this.getLocal() !== '管理员') {
-                query.equalTo('name', this.getLocal())
+            if(this.getLocalName() !== '管理员') {
+                query.equalTo('name', this.getLocalName())
             }
             return query.find().then( (response) => {
                 return this.transformData(response)

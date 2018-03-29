@@ -15,3 +15,7 @@
 sass --watch src/assets/css: src/assets/css
 
 src/assets/html/accoradOA.html
+
+node server.js 1236
+
+http -server -c-1
