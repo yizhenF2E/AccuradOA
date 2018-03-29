@@ -9,3 +9,9 @@
 `let isLocal = true`
 - npm http-server -g
 - http-server -c-1
+
+
+
+sass --watch src/assets/css: src/assets/css
+
+src/assets/html/accoradOA.html

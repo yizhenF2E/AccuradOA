@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../node_modules/GridManager/css/GridManager.css">
+    <link rel="stylesheet" href="../../vendors/dateTimepicker/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/accoradOA.css">
+    <title>互联网研发加班记录</title>
+</head>
+<body id="body">
+<main>
+    <div class="wrap">
+        <div class="alert alert-success">
+            <h4>2018年互联网加班记录[AccuradOA v0.13]</h4>
+            <!--<p style="color: red">我正在修改这个bug,目前只能显示100条数据，请通过搜素查看自己的输入</p>-->
+            <p>在表格上按右键，可以下载表格,然后请各位及时填写！(ಥ_ಥ) 新功能个人中心和交友正在构思，有其他好想法请提出</p>
+            <hr>
+            <p>打车说明：打车请保留打车票据，滴滴快车等请保留网络发票和行程详情，不建议使用替票。</p>
+            <p class="active">餐费说明：工作日和非工作日超过6个小时，餐费40, 正常20。</p>
+            <p>提交票据：请写明加班日期和加班人，如果是替票请标记清楚。(ಥ_ಥ)</p>
+            <p class="active">产生的调休请在三个月内用完，不能累计哦！</p>
+            <hr>
+            <p><a href="mine.html">个人中心</a>|<a href="prev.html"> 往期报销查询入口 </a>|<a href="log.html">更新日志 </a> | <a class="exit">退出点这里</a></p>
+            <!--<a href="friend.html">认识基友...⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄....</a>-->
+            <hr>
+
+        </div>
+
+        <!--输入-->
+        <form class="input-wrap form-inline" id="overTimeForm">
+            <div class="form-row">
+                <label>部门:</label>
+                <select name="department" class="form-control form-select">
+                    <option value="互联网研发">互联网研发</option>
+                </select>
+
+                <label>开始时间:</label>
+                <input size="16" class="form-control" type="text" name="dateStart" value="" readonly id='dateStart'>
+
+                <label>结束时间:</label>
+                <input size="16" class="form-control" type="text" value="" name="dateEnd" readonly id='dateEnd'>
+
+                <label>车费:</label>
+                <input type="number"  class="form-control" name="fare" value="0" placeholder="输入数字">
+
+                <label>餐费:</label>
+                <select name="mealFee" class="form-control form-select">
+                    <option value="0">0</option>
+                    <option value="20">20</option>
+                    <option value="40">40</option>
+                </select>
+                <button id="submit" class="btn btn-default">提交</button>
+            </div>
+        </form>
+
+        <!-- 提交确认 -->
+        <div class="modal fade" id="basicModal" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <ul>
+                            <li>部门：<span class="department">ddd</span></li>
+                            <li>姓名：<span class="name">ddd</span></li>
+                            <li>开始时间：<span class="start-date">ddd</span></li>
+                            <li>结束时间：<span class="end-date">ddd</span></li>
+                            <li>加班时长：<span class="time">ddd</span></li>
+                            <li>车费：<span class="fare">ddd</span></li>
+                            <li>餐费：<span class="meal-fee">ddd</span></li>
+                            <li>周几：<span class="week">ddd</span></li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer send-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭修改</button>
+                        <button type="button" class="btn btn-primary model-send" >保存</button>
+                    </div>
+                    <div class="modal-footer delete-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">手残了</button>
+                        <button type="button" class="btn btn-primary model-delete">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!--登录信息-->
+        <div class="login-info-wrap">
+            <div class="login-info">Hi! ٩̋(๑˃́ꇴ˂̀๑) <span class="login-name"></span>同学加班辛苦了，记得及时填写！</div>
+        </div>
+    </div>
+
+    <table></table>
+</main>
+
+
+
+<!-- 背景 -->
+<script src="../../../src/assets/js/bg.js"></script>
+<script>
+    tdBackground(document.getElementById('body'), {
+        LIGHT:{
+            diffuse: '#3886cf'
+        }
+    })
+</script>
+<!--依赖项-->
+<script src="../../../node_modules/jquery/dist/jquery.js"></script>
+<script src="../../vendors/moment.min.js"></script>
+<script src="../../vendors/jquery.serialize-object.min.js"></script>
+<script src="../../../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<!--数据库-->
+<script src="../../../node_modules/leancloud-storage/dist/av.js"></script>
+
+<!--表格-->
+<script type="text/javascript" src="../../../node_modules/GridManager/js/GridManager.js"></script>
+
+<!--时间输入-->
+<script src="../../vendors/dateTimepicker/bootstrap-datetimepicker.min.js"></script>
+<!--数据库配置-->
+<script src="../js/cloudConfig.js"></script>
+
+<!--配置 逻辑-->
+<script src="../js/accoradOA.js"></script>
+</body>
+</html>

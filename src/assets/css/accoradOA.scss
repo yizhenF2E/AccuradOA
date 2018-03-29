@@ -1,0 +1,78 @@
+@import "default";
+
+body {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+
+}
+main {
+    position: absolute;
+    color: white;
+    padding: 30px 30px 0 30px;
+    height: 100vh;
+    .wrap {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    a {
+        color: $active;
+    }
+    .alert-success {
+        color: white;
+        border: none;
+        background-color: transparent;
+        hr {
+            border-top-color: white;
+        }
+    }
+
+    .login-info-wrap {
+        padding: 0 15px;
+        display: flex;
+        color: white;
+        span {
+            color: $active;
+        }
+    }
+
+    .input-wrap {
+        margin-top: -10px;
+        .form-row {
+            min-width: 1260px;
+            margin: 0 0 0 10px;
+            label {
+                color: white;
+            }
+        }
+
+        .form-select {
+            width: 196px!important;
+        }
+        .btn-default {
+            background: $active;
+            color: white;
+            outline: none;
+        }
+
+    }
+    .table-wrap {
+        .plugin-action {
+            color: red;
+            cursor: pointer;
+        }
+    }
+
+    .modal-body {
+        color: #333333;
+    }
+
+    .table-wrap {
+        background: rgba(255, 255, 255, 0.5);
+    }
+}
+
+
+
+
+
+

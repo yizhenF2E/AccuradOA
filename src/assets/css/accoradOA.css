@@ -1,0 +1,63 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+ul, ol {
+  list-style: none; }
+
+a {
+  cursor: pointer;
+  text-decoration: none; }
+
+.active {
+  color: #30A3FC; }
+
+body {
+  position: fixed;
+  width: 100vw;
+  height: 100vh; }
+
+main {
+  position: absolute;
+  color: white;
+  padding: 30px 30px 0 30px;
+  height: 100vh; }
+  main .wrap {
+    background: rgba(0, 0, 0, 0.3); }
+  main a {
+    color: #30A3FC; }
+  main .alert-success {
+    color: white;
+    border: none;
+    background-color: transparent; }
+    main .alert-success hr {
+      border-top-color: white; }
+  main .login-info-wrap {
+    padding: 0 15px;
+    display: flex;
+    color: white; }
+    main .login-info-wrap span {
+      color: #30A3FC; }
+  main .input-wrap {
+    margin-top: -10px; }
+    main .input-wrap .form-row {
+      min-width: 1260px;
+      margin: 0 0 0 10px; }
+      main .input-wrap .form-row label {
+        color: white; }
+    main .input-wrap .form-select {
+      width: 196px !important; }
+    main .input-wrap .btn-default {
+      background: #30A3FC;
+      color: white;
+      outline: none; }
+  main .table-wrap .plugin-action {
+    color: red;
+    cursor: pointer; }
+  main .modal-body {
+    color: #333333; }
+  main .table-wrap {
+    background: rgba(255, 255, 255, 0.5); }
+
+/*# sourceMappingURL=accoradOA.css.map */
