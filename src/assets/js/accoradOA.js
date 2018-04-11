@@ -183,7 +183,9 @@
                 let start = new Date(formData.dateStart)
                 let end = new Date(formData.dateEnd)
                 let diff = end.getTime() - start.getTime()
-                if (diff < 0) {
+                if (!end.getTime() || !start.getTime()) {
+                    alert('加班时间输入有误！睁大眼睛仔细检测!')
+                } else if (diff < 0) {
                     alert('你穿越了吗？我又一次拿起了我的宝刀！')
                 } else {
                     formData.time = this.diffTime(diff)
